@@ -1,43 +1,39 @@
 /* AiCA · Lotus theme. Themes are sets of tokens; more spirits (Mermaid, Fairy…) only redefine them. */
 :root {
-  --paper: #F7F0EC;
+  /* Always light and airy. Only Ask AiCA uses the candle-lit night tokens. */
+  --paper: #FCF8F5;
   --surface: #FFFFFF;
   --ink: #2A1D17;
   --muted: #7A6358;
-  --line: #EFE4DD;
+  --line: #F1E7E1;
+  --shadow: 0 2px 16px rgba(122, 82, 60, .07);
   --night: #1E1612;
   --night-2: #2E241E;
   --night-ink: #F3E3C3;
   --night-muted: #B9A68A;
   --gold: #C9A04F;
+  --gold-soft: #F8EFDD;
   --lotus: #E39AAE;
 
-  --spirit: #C25D7A; --spirit-ink: #8E3953; --spirit-soft: #FBE6EC;
-  --body: #4F7F6E;   --body-ink: #2F5C4C;   --body-soft: #E1EEE8;
-  --home: #B98A35;   --home-ink: #6E5016;   --home-soft: #F6EBD3;
-  --goals: #4E5E9E;  --goals-ink: #34407A;  --goals-soft: #E5E8F5;
+  --spirit: #C25D7A; --spirit-ink: #8E3953; --spirit-soft: #FCEBF0;
+  --body: #4F7F6E;   --body-ink: #2F5C4C;   --body-soft: #E6F2ED;
+  --home: #B98A35;   --home-ink: #6E5016;   --home-soft: #F8EFDC;
+  --goals: #4E5E9E;  --goals-ink: #34407A;  --goals-soft: #EAEDF8;
 
   --f-display: 'Marcellus', Georgia, serif;
   --f-quote: 'Cormorant Garamond', Georgia, serif;
   --f-body: 'Nunito Sans', system-ui, -apple-system, sans-serif;
   --r: 22px;
+  --pebble: 34px 26px 38px 22px; /* organic, hand-shaped corners */
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #17110E; --surface: #241B16; --ink: #F3E3C3; --muted: #B9A68A; --line: #3A2C25;
-    --night: #2A1F19; --night-2: #3A2C25;
-    --spirit: #E58BA5; --spirit-ink: #F2B3C5; --spirit-soft: #3F2230;
-    --body: #74B29C;   --body-ink: #A6D6C4;   --body-soft: #1D332C;
-    --home: #D9AE5C;   --home-ink: #EACB8E;   --home-soft: #382B16;
-    --goals: #8D9BE0;  --goals-ink: #B9C2F0;  --goals-soft: #232A4A;
-    color-scheme: dark;
-  }
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--paper); color: var(--ink); }
+body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(60vmax 40vmax at 100% 0%, rgba(227, 154, 174, .16), transparent 70%),
+              radial-gradient(50vmax 35vmax at 0% 8%, rgba(201, 160, 79, .10), transparent 70%); }
+html.is-night body::before { display: none; }
 body { font-family: var(--f-body); font-size: 16px; line-height: 1.45; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
 button, input, select { font: inherit; color: inherit; }
 button { cursor: pointer; }
@@ -62,13 +58,15 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 .badge-light { flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px; background: var(--surface); border-radius: 18px; padding: 8px 12px; font-size: 11px; font-weight: 800; border: 0; }
 
-/* intention card */
-.intention { background: var(--night); color: var(--night-ink); border-radius: 24px; padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; }
-.intention .eyebrow { color: var(--gold); }
-.intention p { margin: 0; font-size: 27px; line-height: 1.15; }
+/* intention card: light, like morning sun on water */
+.intention { position: relative; overflow: hidden; border-radius: var(--pebble); padding: 22px 24px; display: flex; flex-direction: column; gap: 8px; color: var(--ink);
+  background: radial-gradient(circle at 88% 12%, rgba(201, 160, 79, .26), transparent 42%),
+              radial-gradient(circle at 4% 100%, rgba(244, 196, 168, .35), transparent 50%), #FCEDF1; }
+.intention .eyebrow { color: var(--spirit-ink); }
+.intention p { margin: 0; font-size: 28px; line-height: 1.15; }
 
 /* cards & rows */
-.card { background: var(--surface); border-radius: var(--r); overflow: hidden; }
+.card { background: var(--surface); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
 .list { list-style: none; margin: 0; padding: 0; }
 .row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; min-height: 56px; border-top: 1px solid var(--line); }
 .row:first-child { border-top: 0; }
@@ -97,7 +95,7 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .petals span { flex: 1; height: 6px; border-radius: 9px; background: var(--line); }
 
 /* add form */
-.add { display: flex; gap: 8px; background: var(--surface); border-radius: var(--r); padding: 6px; }
+.add { display: flex; gap: 8px; background: var(--surface); border-radius: var(--r); padding: 6px; box-shadow: var(--shadow); }
 .add input { flex: 1; min-width: 0; border: 0; background: none; padding: 10px; font-size: 16px; outline: none; }
 .add input::placeholder { color: var(--muted); }
 .btn { border: 0; border-radius: 14px; padding: 11px 16px; font-weight: 800; background: var(--ink); color: var(--paper); }
@@ -160,8 +158,8 @@ h2 { font-family: var(--f-display); font-weight: 400; font-size: 20px; margin: 0
 .stat b { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1; }
 .stat span { font-size: 12px; font-weight: 800; }
 
-.level { background: var(--night); color: var(--night-ink); border-radius: 26px; padding: 20px; display: flex; gap: 16px; align-items: center; }
-.level .bar { height: 8px; border-radius: 9px; background: var(--night-2); overflow: hidden; }
+.level { background: var(--gold-soft); color: var(--ink); border-radius: var(--pebble); padding: 20px; display: flex; gap: 16px; align-items: center; }
+.level .bar { height: 8px; border-radius: 9px; background: #EADCBF; overflow: hidden; }
 .level .bar i { display: block; height: 100%; background: var(--gold); border-radius: 9px; transition: width .4s; }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
@@ -176,3 +174,13 @@ html.is-night, html.is-night body { background: var(--night); color: var(--night
 .add.night { background: var(--night-2); }
 .add.night input { color: var(--night-ink); }
 .add.night input::placeholder { color: var(--night-muted); }
+
+/* rituals: soft pebble cards */
+.ritual { background: var(--surface); border-radius: var(--pebble); box-shadow: var(--shadow); padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.btn.soft { background: var(--body-soft); color: var(--body-ink); align-self: flex-start; }
+.breath { display: flex; align-items: center; gap: 14px; min-height: 64px; }
+.breath-orb { width: 28px; height: 28px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #F6C9D5, var(--lotus)); transition: transform 4s ease-in-out; }
+.breath-orb.in { transform: scale(2.1); }
+.breath-orb.out { transform: scale(1); }
+.journal { display: flex; flex-direction: column; }
+.journal .row { align-items: flex-start; }

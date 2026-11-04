@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import type { AppState, CalEvent, Category, Task } from './types'
+import type { AppState, CalEvent, Category, DayLog, Task } from './types'
 import { parse, today } from './date'
 
 /*
@@ -10,7 +10,7 @@ import { parse, today } from './date'
 
 const KEY = 'aica:v1'
 
-const empty: AppState = { version: 1, tasks: [], events: [], shop: [], recentShop: [], light: 0 }
+const empty: AppState = { version: 1, tasks: [], events: [], shop: [], recentShop: [], light: 0, days: {} }
 
 function load(): AppState {
   try {
@@ -91,6 +91,16 @@ function useAppState() {
         ),
       toggleShop: (itemId: string) => update((s) => ({ ...s, shop: s.shop.map((x) => (x.id === itemId ? { ...x, done: !x.done } : x)) })),
       deleteShop: (itemId: string) => update((s) => ({ ...s, shop: s.shop.filter((x) => x.id !== itemId) })),
+      /** Save a ritual. Finishing the morning or evening ritual gives +10 light once per day. */
+      logDay: (day: string, patch: DayLog) =>
+        update((s) => {
+          const prev = s.days[day] ?? {}
+          const next = { ...prev, ...patch }
+          let bonus = 0
+          if (next.morningDone && !prev.morningDone) bonus += 10
+          if (next.eveningDone && !prev.eveningDone) bonus += 10
+          return { ...s, days: { ...s.days, [day]: next }, light: s.light + bonus }
+        }),
       clearBasket: () =>
         update((s) => {
           const bought = s.shop.filter((x) => x.done).map((x) => x.text)

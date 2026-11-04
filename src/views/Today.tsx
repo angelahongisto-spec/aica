@@ -3,6 +3,7 @@ import { greeting, longDate, today } from '../lib/date'
 import { affirmationFor } from '../lib/spirit'
 import { Empty, Lotus, TaskRow } from '../components/ui'
 import { TaskAdd } from '../components/TaskAdd'
+import { RitualCard } from '../components/RitualCard'
 import type { View } from '../components/TabBar'
 import type { CalEvent } from '../lib/types'
 
@@ -33,6 +34,8 @@ export function Today({ go, openEvent }: { go: (v: View) => void; openEvent: (e:
         <span className="eyebrow">Today's intention</span>
         <p className="quote">{affirmationFor(t)}</p>
       </section>
+
+      <RitualCard />
 
       <section className="sec">
         <div className="sec-head">

@@ -3,6 +3,10 @@ import { LEVELS, levelFor } from '../lib/spirit'
 import { addDays, today } from '../lib/date'
 import { CATEGORIES } from '../lib/types'
 import { Lotus } from '../components/ui'
+import { MOODS, RitualCard, type RitualTime } from '../components/RitualCard'
+import { shortDate } from '../lib/date'
+import { useState } from 'react'
+import { Reminders } from '../components/Reminders'
 
 export function Rituals() {
   const { state } = useStore()
@@ -12,6 +16,8 @@ export function Rituals() {
   const counts = CATEGORIES.map((c) => ({ ...c, n: week.filter((x) => x.category === c.id).length }))
   const max = Math.max(1, ...counts.map((c) => c.n))
   const lowest = counts.reduce((a, b) => (b.n < a.n ? b : a))
+  const [open, setOpen] = useState<RitualTime | null>(null)
+  const journal = Object.entries(state.days).filter(([, d]) => d.focus || d.mood || d.gratitude).sort((a, b) => b[0].localeCompare(a[0])).slice(0, 7)
 
   return (
     <>
@@ -23,16 +29,30 @@ export function Rituals() {
       <section className="level" aria-label="Your level">
         <span style={{ color: 'var(--gold)' }}><Lotus size={72} filled /></span>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <span className="eyebrow" style={{ color: 'var(--gold)' }}>Level {lv.level}</span>
+          <span className="eyebrow t-home">Level {lv.level}</span>
           <span style={{ fontFamily: 'var(--f-display)', fontSize: 24 }}>{lv.name}</span>
           <div className="bar" role="progressbar" aria-valuenow={Math.round(lv.progress * 100)} aria-valuemin={0} aria-valuemax={100}>
             <i style={{ width: `${Math.round(lv.progress * 100)}%` }} />
           </div>
-          <span style={{ fontSize: 12, color: 'var(--night-muted)' }}>
+          <span className="muted" style={{ fontSize: 12 }}>
             {lv.next ? `${state.light} / ${lv.next.at} light to ${lv.next.name}` : `${state.light} light. You are radiant.`}
           </span>
         </div>
       </section>
+
+      <section className="sec">
+        <h2>Daily rituals</h2>
+        <div className="chips">
+          {(['morning', 'midday', 'evening'] as RitualTime[]).map((r) => (
+            <button key={r} className="chip" aria-pressed={open === r} onClick={() => setOpen(open === r ? null : r)}>
+              {r === 'morning' ? 'Morning ritual' : r === 'midday' ? 'Midday pause' : 'Evening ritual'}
+            </button>
+          ))}
+        </div>
+        {open && <RitualCard key={open} when={open} />}
+      </section>
+
+      <Reminders />
 
       <section className="sec">
         <h2>This week's balance</h2>
@@ -51,6 +71,27 @@ export function Rituals() {
           </p>
         </div>
       </section>
+
+      {journal.length > 0 && (
+        <section className="sec">
+          <h2>Your days</h2>
+          <div className="card"><ul className="list journal">
+            {journal.map(([day, d]) => {
+              const m = MOODS.find((x) => x.id === d.mood)
+              return (
+                <li key={day} className="row">
+                  <span className="dot" style={{ color: m?.color ?? 'var(--line)', marginTop: 5 }} />
+                  <div className="txt">
+                    <span style={{ fontWeight: 800 }}>{shortDate(day)}{m ? ` · ${m.label}` : ''}</span>
+                    {d.focus && <span className="muted" style={{ fontSize: 14 }}>Focus: {d.focus}</span>}
+                    {d.gratitude && <span className="quote" style={{ fontSize: 17 }}>Grateful for {d.gratitude}</span>}
+                  </div>
+                </li>
+              )
+            })}
+          </ul></div>
+        </section>
+      )}
 
       <section className="sec">
         <h2>The path</h2>

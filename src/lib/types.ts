@@ -32,6 +32,17 @@ export interface ShopItem {
   done: boolean
 }
 
+export type Mood = 'heavy' | 'tender' | 'calm' | 'good' | 'glowing'
+
+/** One day's rituals: a morning focus, an evening reflection. */
+export interface DayLog {
+  focus?: string
+  morningDone?: boolean
+  mood?: Mood
+  gratitude?: string
+  eveningDone?: boolean
+}
+
 export interface AppState {
   version: 1
   tasks: Task[]
@@ -39,4 +50,5 @@ export interface AppState {
   shop: ShopItem[]
   recentShop: string[]
   light: number // points earned by finishing things
+  days: Record<string, DayLog> // YYYY-MM-DD -> rituals
 }

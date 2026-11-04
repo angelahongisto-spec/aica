@@ -1,0 +1,28 @@
+name: Daily reminders
+
+on:
+  schedule:
+    - cron: '0 * * * *' # every hour; the script decides whether it's ritual time
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: 'Send a test now (8 = morning, 13 = midday, 21 = evening)'
+        required: false
+        default: '8'
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save web-push@3
+      - run: node scripts/send-reminder.mjs
+        env:
+          VAPID_PUBLIC_KEY: BGc7oHQFLhNLv7ohDgLjXzOETJKD9_wJCnGrFyQpMghDccBQHz1DwaaO35r0SW91OEj9ZVxAlibekTpmvj0kEt0
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
+          AICA_TIMEZONE: Europe/Rome
+          FORCE_SLOT: ${{ github.event.inputs.slot }}

@@ -10,13 +10,14 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: { importScripts: ['push-sw.js'] },
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
         name: 'AiCA',
         short_name: 'AiCA',
         description: 'Your calm little life planner: calendar, lists, rituals and an AI helper.',
-        theme_color: '#F7F0EC',
-        background_color: '#F7F0EC',
+        theme_color: '#FCF8F5',
+        background_color: '#FCF8F5',
         display: 'standalone',
         start_url: './',
         icons: [
