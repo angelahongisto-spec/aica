@@ -11,11 +11,41 @@
     <meta name="apple-mobile-web-app-title" content="AiCA" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./splash/1320x2868.png" />
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./splash/1290x2796.png" />
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./splash/1206x2622.png" />
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./splash/1179x2556.png" />
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./splash/1284x2778.png" />
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./splash/1170x2532.png" />
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./splash/1125x2436.png" />
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./splash/828x1792.png" />
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./splash/750x1334.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@1,500&family=Nunito+Sans:wght@400;600;700;800&display=swap" />
   </head>
   <body>
+    <!-- Opening moment: the lotus blooms, then the app appears. -->
+    <style>
+      #splash { position: fixed; inset: 0; z-index: 100; background: #FCF8F5; display: grid; place-items: center; transition: opacity .6s ease; }
+      #splash.hide { opacity: 0; pointer-events: none; }
+      #splash .inner { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: -4vh; }
+      #splash img { width: 30vw; max-width: 160px; animation: bloom 1.2s cubic-bezier(.2,.8,.2,1) both; }
+      #splash .word { font-family: 'Marcellus', Georgia, serif; font-size: 30px; letter-spacing: .32em; color: #2A1D17; padding-left: .32em; animation: rise 1s .45s ease both; }
+      #splash .tag { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 18px; color: #8A6A2B; animation: rise 1s .7s ease both; }
+      @keyframes bloom { from { opacity: 0; transform: scale(.7) translateY(10px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+      @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      html[data-theme='dark'] #splash { background: #15100D; }
+      html[data-theme='dark'] #splash .word { color: #F3E6CC; }
+      @media (prefers-reduced-motion: reduce) { #splash * { animation: none !important; } }
+    </style>
+    <div id="splash" aria-hidden="true">
+      <div class="inner">
+        <img src="./lotus.svg" alt="" />
+        <span class="word">AiCA</span>
+        <span class="tag">time, in bloom</span>
+      </div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

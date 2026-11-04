@@ -9,9 +9,10 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
+      injectRegister: false,
       workbox: { importScripts: ['push-sw.js'] },
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'lotus.svg'],
       manifest: {
         name: 'AiCA',
         short_name: 'AiCA',
