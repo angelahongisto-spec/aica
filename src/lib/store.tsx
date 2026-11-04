@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import type { AppState, CalEvent, Category, DayLog, Task } from './types'
+import type { AppState, Budget, CalEvent, Category, DayLog, Expense, Goal, Settings, Task } from './types'
 import { parse, today } from './date'
 
 /*
@@ -10,12 +10,17 @@ import { parse, today } from './date'
 
 const KEY = 'aica:v1'
 
-const empty: AppState = { version: 1, tasks: [], events: [], shop: [], recentShop: [], light: 0, days: {} }
+const empty: AppState = { version: 1, tasks: [], events: [], shop: [], recentShop: [], light: 0, days: {},
+  budget: null, expenses: [], goals: [], settings: { name: 'Angela', theme: 'light' },
+}
 
 function load(): AppState {
   try {
     const raw = localStorage.getItem(KEY)
-    if (raw) return { ...empty, ...JSON.parse(raw) }
+    if (raw) {
+      const saved = JSON.parse(raw)
+      return { ...empty, ...saved, settings: { ...empty.settings, ...saved.settings } }
+    }
   } catch {
     /* storage unavailable: start fresh */
   }
@@ -101,6 +106,23 @@ function useAppState() {
           if (next.eveningDone && !prev.eveningDone) bonus += 10
           return { ...s, days: { ...s.days, [day]: next }, light: s.light + bonus }
         }),
+      setBudget: (budget: Budget | null) => update((s) => ({ ...s, budget })),
+      addExpense: (e: Omit<Expense, 'id'>) => update((s) => ({ ...s, expenses: [{ ...e, id: id() }, ...s.expenses] })),
+      deleteExpense: (expId: string) => update((s) => ({ ...s, expenses: s.expenses.filter((x) => x.id !== expId) })),
+      saveGoal: (g: Goal) =>
+        update((s) => ({ ...s, goals: s.goals.some((x) => x.id === g.id) ? s.goals.map((x) => (x.id === g.id ? g : x)) : [...s.goals, g] })),
+      deleteGoal: (goalId: string) => update((s) => ({ ...s, goals: s.goals.filter((x) => x.id !== goalId) })),
+      /** Finishing a goal step gives +5 light. */
+      toggleStep: (goalId: string, stepId: string) =>
+        update((s) => {
+          let delta = 0
+          const goals = s.goals.map((g) => g.id !== goalId ? g : {
+            ...g,
+            steps: g.steps.map((st) => { if (st.id !== stepId) return st; delta = st.done ? -5 : 5; return { ...st, done: !st.done } }),
+          })
+          return { ...s, goals, light: Math.max(0, s.light + delta) }
+        }),
+      setSettings: (patch: Partial<Settings>) => update((s) => ({ ...s, settings: { ...s.settings, ...patch } })),
       clearBasket: () =>
         update((s) => {
           const bought = s.shop.filter((x) => x.done).map((x) => x.text)

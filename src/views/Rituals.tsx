@@ -6,9 +6,9 @@ import { Lotus } from '../components/ui'
 import { MOODS, RitualCard, type RitualTime } from '../components/RitualCard'
 import { shortDate } from '../lib/date'
 import { useState } from 'react'
-import { Reminders } from '../components/Reminders'
+import { BackHeader } from '../components/BackHeader'
 
-export function Rituals() {
+export function Rituals({ back }: { back: () => void }) {
   const { state } = useStore()
   const lv = levelFor(state.light)
   const weekAgo = addDays(today(), -6)
@@ -21,10 +21,7 @@ export function Rituals() {
 
   return (
     <>
-      <header>
-        <div className="eyebrow">Your path</div>
-        <h1>Rituals</h1>
-      </header>
+      <BackHeader back={back} eyebrow="Your path" title="Rituals" />
 
       <section className="level" aria-label="Your level">
         <span style={{ color: 'var(--gold)' }}><Lotus size={72} filled /></span>
@@ -51,8 +48,6 @@ export function Rituals() {
         </div>
         {open && <RitualCard key={open} when={open} />}
       </section>
-
-      <Reminders />
 
       <section className="sec">
         <h2>This week's balance</h2>

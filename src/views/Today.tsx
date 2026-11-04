@@ -4,6 +4,7 @@ import { affirmationFor } from '../lib/spirit'
 import { Empty, Lotus, TaskRow } from '../components/ui'
 import { TaskAdd } from '../components/TaskAdd'
 import { RitualCard } from '../components/RitualCard'
+import { BudgetGlance } from '../components/BudgetGlance'
 import type { View } from '../components/TabBar'
 import type { CalEvent } from '../lib/types'
 
@@ -22,9 +23,9 @@ export function Today({ go, openEvent }: { go: (v: View) => void; openEvent: (e:
       <header className="top">
         <div>
           <div className="eyebrow">{longDate(t)}</div>
-          <h1>{greeting()}, Angela</h1>
+          <h1>{greeting()}{state.settings.name ? `, ${state.settings.name}` : ''}</h1>
         </div>
-        <button className="badge-light" onClick={() => go('rituals')} aria-label={`${state.light} light earned, open Rituals`}>
+        <button className="badge-light" onClick={() => go('me')} aria-label={`${state.light} light earned, open Me`}>
           <Lotus size={26} filled />
           {state.light} light
         </button>
@@ -56,6 +57,8 @@ export function Today({ go, openEvent }: { go: (v: View) => void; openEvent: (e:
           )}
         </div>
       </section>
+
+      <BudgetGlance go={go} />
 
       <section className="sec">
         <div className="sec-head">

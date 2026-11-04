@@ -43,6 +43,55 @@ export interface DayLog {
   eveningDone?: boolean
 }
 
+export type BudgetPeriod = 'day' | 'week' | 'month'
+export type SpendCategory = 'food' | 'home' | 'selfcare' | 'fun' | 'travel' | 'other'
+
+export const SPEND_CATEGORIES: { id: SpendCategory; label: string; color: string }[] = [
+  { id: 'food', label: 'Food', color: 'var(--body)' },
+  { id: 'home', label: 'Home', color: 'var(--home)' },
+  { id: 'selfcare', label: 'Self-care', color: 'var(--spirit)' },
+  { id: 'fun', label: 'Fun', color: 'var(--goals)' },
+  { id: 'travel', label: 'Travel', color: 'var(--muted)' },
+  { id: 'other', label: 'Other', color: 'var(--gold)' },
+]
+
+export interface Expense {
+  id: string
+  amount: number
+  note: string
+  category: SpendCategory
+  date: string // YYYY-MM-DD
+}
+
+export interface Budget {
+  period: BudgetPeriod
+  amount: number
+  currency: string
+}
+
+export interface GoalStep {
+  id: string
+  text: string
+  done: boolean
+}
+
+/** A goal and its roots: each "why" digs one level deeper toward the real reason. */
+export interface Goal {
+  id: string
+  title: string
+  area: Category
+  whys: string[]
+  steps: GoalStep[]
+  createdAt: string
+}
+
+export type ThemeMode = 'light' | 'dark' | 'system'
+
+export interface Settings {
+  name: string
+  theme: ThemeMode
+}
+
 export interface AppState {
   version: 1
   tasks: Task[]
@@ -51,4 +100,8 @@ export interface AppState {
   recentShop: string[]
   light: number // points earned by finishing things
   days: Record<string, DayLog> // YYYY-MM-DD -> rituals
+  budget: Budget | null
+  expenses: Expense[]
+  goals: Goal[]
+  settings: Settings
 }

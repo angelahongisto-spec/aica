@@ -12,6 +12,9 @@ I designed and built it as a personal project, from moodboard to working app.
 - **Calendar:** month view with color-coded dots, weekly repeating events
 - **Lists:** to-dos grouped by Overdue / Today / Tomorrow / Later / Someday, and a shopping list that remembers what you buy
 - **Color coding:** every item belongs to an area: Spirit, Body, Home or Goals
+- **Budget:** daily, weekly or monthly budget, quick spend logging, what is left and where it went
+- **Goals & roots:** each goal digs down through "why?" to its real root, with small steps that earn light
+- **Settings:** light, dark or match phone, name, reminders, data backup
 - **Rituals:** finishing things earns *light*; levels grow from Seed to Radiant, and a weekly balance shows which area needs care
 - **Ask AiCA:** quick actions such as "weekly yoga on Wednesdays" (full AI chat in v1.2)
 - **Installable PWA:** offline support, home screen icon, safe-area aware layout for iPhone
